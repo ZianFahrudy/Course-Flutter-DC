@@ -3,7 +3,7 @@ import 'package:event_app/core/env/env_config.dart';
 class FlavorSettings {
   FlavorSettings.development() {
     EnvConfig.getInstance(
-      apiBaseUrl: 'http://localhost/api.duniacoding.id/',
+      apiBaseUrl: 'http://localhost/api.dunia.coding.id',
       flavorName: 'Development',
     );
   }

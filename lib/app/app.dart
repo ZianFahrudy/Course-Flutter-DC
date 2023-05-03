@@ -1,6 +1,10 @@
+import 'package:event_app/common/utils/typography.dart';
 import 'package:event_app/features/auth/presentation/pages/login_page.dart';
 import 'package:event_app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+
+import '../common/app_theme.dart';
+import '../common/utils/palette.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -8,12 +12,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color(0xFF13B9FF),
-        ),
-      ),
+      theme: AppTheme.light(Palette.primary, MyTypography.textTheme),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: const LoginPage(),
