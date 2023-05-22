@@ -3,21 +3,21 @@ import 'package:event_app/core/env/env_config.dart';
 class FlavorSettings {
   FlavorSettings.development() {
     EnvConfig.getInstance(
-      apiBaseUrl: 'http://localhost/api.dunia.coding.id',
+      apiBaseUrl: 'https://api1.coursedca.com',
       flavorName: 'Development',
     );
   }
 
   FlavorSettings.staging() {
     EnvConfig.getInstance(
-      apiBaseUrl: 'http://localhost/api.dunia.coding/staging',
+      apiBaseUrl: 'https://api1.coursedca.com',
       flavorName: 'Staging',
     );
   }
 
   FlavorSettings.production() {
     EnvConfig.getInstance(
-      apiBaseUrl: 'http://localhost/api.dunia.coding/prod',
+      apiBaseUrl: 'https://api1.coursedca.com',
       flavorName: 'Production',
     );
   }

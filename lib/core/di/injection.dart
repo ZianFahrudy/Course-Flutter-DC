@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:event_app/core/env/env_config.dart';
 import 'package:event_app/core/network/dio_handler.dart';
 import 'package:event_app/core/prefs/shared_prefs.dart';
+import 'package:event_app/features/auth/di/dependency.dart';
 
 import 'package:get_it/get_it.dart';
 
@@ -19,5 +20,7 @@ class Injections {
       ..registerLazySingleton(
         () => DioHandler(config: sl(), preferences: sl()),
       );
+
+    RegisterAuthModule();
   }
 }
