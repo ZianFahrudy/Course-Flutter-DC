@@ -26,16 +26,16 @@ class AppTheme {
       ),
     ),
     alignLabelWithHint: true,
-    errorBorder: const UnderlineInputBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Palette.red,
       ),
     ),
-    focusedErrorBorder: const UnderlineInputBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: Palette.red,
       ),
     ),
     hintStyle: const TextStyle(color: Colors.grey),

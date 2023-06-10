@@ -25,3 +25,10 @@ class AuthFailure extends AuthState {
     required this.message,
   });
 }
+
+class RegisterSuccess extends AuthState {
+  final RegisterEntity response;
+  const RegisterSuccess({
+    required this.response,
+  });
+}

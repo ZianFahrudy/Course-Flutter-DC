@@ -14,3 +14,10 @@ class LoginEvent extends AuthEvent {
     required this.body,
   });
 }
+
+class RegisterEvent extends AuthEvent {
+  final RegisterBody body;
+  const RegisterEvent({
+    required this.body,
+  });
+}

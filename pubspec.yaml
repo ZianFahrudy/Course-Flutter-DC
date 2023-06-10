@@ -8,6 +8,7 @@ environment:
   flutter: 3.7.1
 
 dependencies:
+  another_flushbar: ^1.12.30
   bloc: ^8.1.1
   dartz: ^0.10.1
   dio: ^5.1.1
@@ -17,6 +18,9 @@ dependencies:
   flutter_bloc: ^8.1.2
   flutter_localizations:
     sdk: flutter
+  flutter_spinkit: ^5.2.0
+  form_builder_validators: ^8.6.1
+  get: ^4.6.5
   get_it: ^7.2.0
   google_fonts: ^4.0.3
   intl: ^0.17.0

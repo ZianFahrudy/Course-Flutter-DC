@@ -1,12 +1,18 @@
-import 'dart:developer';
+// ignore_for_file: inference_failure_on_instance_creation
 
-import 'package:event_app/common/utils/palette.dart';
-import 'package:event_app/common/utils/typography.dart';
+import 'package:event_app/components/empty/nothing.dart';
+import 'package:event_app/components/flushbar/my_flushbar.dart';
+import 'package:event_app/components/loader/page_loader.dart';
 import 'package:event_app/core/di/injection.dart';
 import 'package:event_app/features/auth/data/models/request/login_body.dart';
 import 'package:event_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:event_app/features/auth/presentation/widgets/login_bottom_bar.dart';
+import 'package:event_app/features/auth/presentation/widgets/login_form.dart';
+import 'package:event_app/features/auth/presentation/widgets/login_image.dart';
+import 'package:event_app/features/auth/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,21 +27,45 @@ class _LoginPageState extends State<LoginPage> {
 
   final authBloc = sl<AuthBloc>();
 
-  final obsecure = ValueNotifier<bool>(false);
+  final obsecure = ValueNotifier<bool>(true);
+
+  final _formKey = GlobalKey<FormState>();
+
+  bool isValidated() {
+    final form = _formKey.currentState;
+
+    if (form!.validate()) {
+      form.save();
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void onLoginPressed() {
+    if (isValidated()) {
+      authBloc.add(
+        LoginEvent(
+          body: LoginBody(
+            email: emailController.text,
+            password: passwordController.text,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    log('refresh page');
     return BlocProvider(
       create: (context) => authBloc,
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            log('login sukses');
-            log(state.response.data!.token);
+            Get.off<void>(() => const HomePage());
           } else if (state is AuthFailure) {
-            log('login gagal');
-            log(state.message);
+            MyFlushbar.failure(context, state.message);
           }
         },
         builder: (context, state) {
@@ -44,140 +74,77 @@ class _LoginPageState extends State<LoginPage> {
             child: Scaffold(
               body: Stack(
                 children: [
-                  Align(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
-                      child: SafeArea(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.asset(
-                                  'assets/logo.png',
-                                  width: MediaQuery.of(context).size.width / 3,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              TextField(
-                                controller: emailController,
-                                style: MyTypography.bodyMedium,
-                                decoration: InputDecoration(
-                                  label: Text(
-                                    'Email',
-                                    style: MyTypography.bodyMedium,
-                                  ),
-                                  hintText: 'Silahkan tulis email',
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              ValueListenableBuilder(
-                                valueListenable: obsecure,
-                                builder: (context, _, __) => TextField(
-                                  controller: passwordController,
-                                  style: MyTypography.bodyMedium,
-                                  obscureText: obsecure.value,
-                                  decoration: InputDecoration(
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        obsecure.value = !obsecure.value;
-                                      },
-                                      icon: Icon(
-                                        !obsecure.value
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                      ),
-                                    ),
-                                    label: Text(
-                                      'Password',
-                                      style: MyTypography.bodyMedium,
-                                    ),
-                                    hintText: 'Silahkan tulis password',
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Forgot password ?',
-                                    style: MyTypography.bodyMedium
-                                        .copyWith(color: Palette.primary),
-                                  ),
-                                ),
-                              ),
-                              OutlinedButton(
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Palette.primary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  side: const BorderSide(
-                                    color: Palette.primary,
-                                  ),
-                                  backgroundColor: Colors.white,
-                                  minimumSize: const Size(
-                                    double.infinity,
-                                    50,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  authBloc.add(
-                                    LoginEvent(
-                                      body: LoginBody(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Login',
-                                  style: MyTypography.bodyLarge
-                                      .copyWith(color: Palette.primary),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Belum Punya Akun ?',
-                                    style: MyTypography.bodyMedium.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Text(
-                                      'Daftar Sekarang',
-                                      style: MyTypography.bodyMedium
-                                          .copyWith(color: Palette.primary),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                  LoginContent(
+                    formKey: _formKey,
+                    emailController: emailController,
+                    obsecure: obsecure,
+                    passwordController: passwordController,
+                    onPressed: onLoginPressed,
                   ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthLoading) {
+                        return const PageLoader();
+                      } else {
+                        return const Nothing();
+                      }
+                    },
+                  )
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class LoginContent extends StatelessWidget {
+  const LoginContent({
+    required this.formKey,
+    required this.emailController,
+    required this.obsecure,
+    required this.passwordController,
+    super.key,
+    this.onPressed,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final ValueNotifier<bool> obsecure;
+  final TextEditingController passwordController;
+  final void Function()? onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    
+                  },
+                  child: const LoginImage()),
+                LoginForm(
+                  formKey: formKey,
+                  emailController: emailController,
+                  obsecure: obsecure,
+                  passwordController: passwordController,
+                ),
+                LoginBottomBar(
+                  onPressed: onPressed,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
