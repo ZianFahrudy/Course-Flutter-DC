@@ -44,7 +44,7 @@ class DioHandler {
   QueuedInterceptorsWrapper _queuedInterceptorsWrapper() {
     return QueuedInterceptorsWrapper(
       onResponse: (response, handler) {
-        return handler.resolve(response);
+        return handler.next(response);
       },
       onRequest: (options, handler) {
         return handler.next(options);

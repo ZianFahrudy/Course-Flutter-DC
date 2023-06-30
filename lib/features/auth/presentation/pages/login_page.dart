@@ -4,12 +4,12 @@ import 'package:event_app/components/empty/nothing.dart';
 import 'package:event_app/components/flushbar/my_flushbar.dart';
 import 'package:event_app/components/loader/page_loader.dart';
 import 'package:event_app/core/di/injection.dart';
+import 'package:event_app/core/routes/routes.dart';
 import 'package:event_app/features/auth/data/models/request/login_body.dart';
 import 'package:event_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:event_app/features/auth/presentation/widgets/login_bottom_bar.dart';
 import 'package:event_app/features/auth/presentation/widgets/login_form.dart';
 import 'package:event_app/features/auth/presentation/widgets/login_image.dart';
-import 'package:event_app/features/auth/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Get.off<void>(() => const HomePage());
+            Get.offNamed<void>(RoutesName.mainNavigation);
           } else if (state is AuthFailure) {
             MyFlushbar.failure(context, state.message);
           }
@@ -128,10 +128,9 @@ class LoginContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: (){
-                    
-                  },
-                  child: const LoginImage()),
+                  onTap: () {},
+                  child: const LoginImage(),
+                ),
                 LoginForm(
                   formKey: formKey,
                   emailController: emailController,

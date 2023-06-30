@@ -3,6 +3,7 @@ import 'package:event_app/features/auth/data/datasources/auth_local_datasources.
 import 'package:event_app/features/auth/data/datasources/auth_remote_datasources.dart';
 import 'package:event_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:event_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:event_app/features/auth/domain/usecases/get_profile_member_usecase.dart';
 import 'package:event_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:event_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:event_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -27,10 +28,11 @@ class RegisterAuthModule {
       )
 
       // bloc
-      ..registerFactory(() => AuthBloc(sl(), sl()))
+      ..registerFactory(() => AuthBloc(sl(), sl(), sl()))
 
       // usecase
       ..registerLazySingleton(() => LoginUsecase(sl()))
+      ..registerLazySingleton(() => GetProfileMemberUsecase(sl()))
       ..registerLazySingleton(() => RegisterUsecase(sl()));
   }
 }

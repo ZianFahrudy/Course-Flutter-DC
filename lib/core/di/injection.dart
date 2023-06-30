@@ -3,7 +3,8 @@ import 'package:event_app/core/env/env_config.dart';
 import 'package:event_app/core/network/dio_handler.dart';
 import 'package:event_app/core/prefs/shared_prefs.dart';
 import 'package:event_app/features/auth/di/dependency.dart';
-
+import 'package:event_app/features/event/di/dependency.dart';
+import 'package:event_app/features/information/di/dependency.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -22,5 +23,7 @@ class Injections {
       );
 
     RegisterAuthModule();
+    RegisterEventModule();
+    RegisterInformationModule();
   }
 }

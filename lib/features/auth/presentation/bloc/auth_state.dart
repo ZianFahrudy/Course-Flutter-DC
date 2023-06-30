@@ -32,3 +32,10 @@ class RegisterSuccess extends AuthState {
     required this.response,
   });
 }
+
+class ProfilMemberSuccess extends AuthState {
+  final ProfileMemberEntity response;
+  const ProfilMemberSuccess({
+    required this.response,
+  });
+}

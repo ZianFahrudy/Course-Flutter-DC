@@ -78,10 +78,10 @@ class AppTheme {
           side: const BorderSide(
             color: Palette.primary,
           ),
-          minimumSize: const Size(
-            double.infinity,
-            50,
-          ),
+          // minimumSize: const Size(
+          //   double.infinity,
+          //   50,
+          // ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -94,10 +94,10 @@ class AppTheme {
             color: Palette.primary,
           ),
           backgroundColor: Colors.white,
-          minimumSize: const Size(
-            double.infinity,
-            50,
-          ),
+          // minimumSize: const Size(
+          //   double.infinity,
+          //   50,
+          // ),
         ),
       ),
       buttonTheme: const ButtonThemeData(

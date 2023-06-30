@@ -26,7 +26,7 @@ class _AppState extends State<App> {
       theme: AppTheme.light(Palette.primary, MyTypography.textTheme),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: isLogin ? RoutesName.homePage : RoutesName.loginPage,
+      initialRoute: isLogin ? RoutesName.mainNavigation : RoutesName.loginPage,
       getPages: Routes.page.map((page) => page).toList(),
     );
   }

@@ -21,3 +21,5 @@ class RegisterEvent extends AuthEvent {
     required this.body,
   });
 }
+
+class GetProfileMemberEvent extends AuthEvent {}

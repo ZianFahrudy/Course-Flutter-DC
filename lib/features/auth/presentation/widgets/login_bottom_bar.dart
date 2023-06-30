@@ -1,10 +1,9 @@
 import 'package:event_app/common/utils/palette.dart';
 import 'package:event_app/common/utils/typography.dart';
 import 'package:event_app/components/button/my_outlined_button.dart';
+import 'package:event_app/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../core/routes/routes.dart';
 
 class LoginBottomBar extends StatelessWidget {
   const LoginBottomBar({super.key, this.onPressed});
