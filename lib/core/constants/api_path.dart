@@ -6,6 +6,7 @@ class ApiPath {
 
   //EVENT
   static const event = '/event';
+  static const searchEvent = '/event/search';
 
   //Information
   static const information = '/information';

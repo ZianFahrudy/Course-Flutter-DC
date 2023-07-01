@@ -19,6 +19,8 @@ class EventModel extends EventEntity {
     required super.eventDesc,
     required MentorModel super.mentor,
     required super.status,
+    required super.isJoin,
+    required super.attend,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) =>

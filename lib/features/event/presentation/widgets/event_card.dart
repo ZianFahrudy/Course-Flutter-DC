@@ -39,7 +39,10 @@ class EventCard extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () {
-                    Get.toNamed<void>(RoutesName.detailEventPage);
+                    Get.toNamed<void>(
+                      RoutesName.detailEventPage,
+                      arguments: data[index].eventId,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
@@ -90,6 +93,7 @@ class LabelStatus extends StatelessWidget {
         height: 25,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
+          boxShadow: const [BoxShadow(color: Palette.secondary, blurRadius: 2)],
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
@@ -129,7 +133,9 @@ class BottomContent extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 16,
-            backgroundImage: NetworkImage(data.mentor.mentorAvatar),
+            backgroundImage: data.mentor.mentorAvatar == ''
+                ? null
+                : NetworkImage(data.mentor.mentorAvatar),
           ),
           const SizedBox(width: 15),
           Column(
@@ -140,27 +146,33 @@ class BottomContent extends StatelessWidget {
                 data.mentor.mentorName,
                 style: MyTypography.bodySmall.copyWith(color: Colors.white),
               ),
-              Text(
-                '${data.mentor.mentorJob} at ${data.mentor.mentorCompany}',
-                style: MyTypography.labelSmall.copyWith(color: Colors.white),
+              SizedBox(
+                width: Get.width - 220,
+                child: Text(
+                  '${data.mentor.mentorJob} at ${data.mentor.mentorCompany}',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: MyTypography.labelSmall.copyWith(color: Colors.white),
+                ),
               ),
             ],
           ),
           const Spacer(),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+          if (data.isJoin == 'false')
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                minimumSize: const Size(80, 30),
               ),
-              minimumSize: const Size(80, 30),
-            ),
-            onPressed: () {},
-            child: Text(
-              'JOIN',
-              style: MyTypography.labelSmall.copyWith(color: Palette.primary),
-            ),
-          )
+              onPressed: () {},
+              child: Text(
+                'JOIN',
+                style: MyTypography.labelSmall.copyWith(color: Palette.primary),
+              ),
+            )
         ],
       ),
     );

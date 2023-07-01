@@ -19,4 +19,6 @@ EventModel _$EventModelFromJson(Map<String, dynamic> json) => EventModel(
       eventDesc: json['event_desc'] as String,
       mentor: MentorModel.fromJson(json['mentor'] as Map<String, dynamic>),
       status: json['status'] as String,
+      isJoin: json['is_join'] as String,
+      attend: json['attend'] as String,
     );

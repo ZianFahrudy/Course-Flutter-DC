@@ -3,6 +3,8 @@ import 'package:event_app/features/event/data/datasources/event_remote_datasourc
 import 'package:event_app/features/event/data/repositories/event_repository_impl.dart';
 import 'package:event_app/features/event/domain/repositories/event_repository.dart';
 import 'package:event_app/features/event/domain/usecases/get_all_event_usecase.dart';
+import 'package:event_app/features/event/domain/usecases/get_detail_event_usecase.dart';
+import 'package:event_app/features/event/domain/usecases/search_event_usecase.dart';
 import 'package:event_app/features/event/presentation/bloc/event_bloc.dart';
 
 class RegisterEventModule {
@@ -22,9 +24,11 @@ class RegisterEventModule {
       )
 
       // bloc
-      ..registerFactory(() => EventBloc(sl()))
+      ..registerFactory(() => EventBloc(sl(), sl(), sl()))
 
       // usecase
+      ..registerLazySingleton(() => SearchEventUsecase(sl()))
+      ..registerLazySingleton(() => GetDetailEventUsecase(sl()))
       ..registerLazySingleton(() => GetAllEventUsecase(sl()));
   }
 }

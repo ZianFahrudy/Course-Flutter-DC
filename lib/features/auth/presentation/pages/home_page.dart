@@ -4,6 +4,7 @@ import 'package:event_app/common/utils/palette.dart';
 import 'package:event_app/common/utils/typography.dart';
 import 'package:event_app/components/empty/nothing.dart';
 import 'package:event_app/core/di/injection.dart';
+import 'package:event_app/core/routes/routes.dart';
 import 'package:event_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:event_app/features/auth/presentation/widgets/home_appbar.dart';
 import 'package:event_app/features/auth/presentation/widgets/search_card.dart';
@@ -13,6 +14,7 @@ import 'package:event_app/features/information/presentation/bloc/information_blo
 import 'package:event_app/features/information/presentation/widgets/home_information_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -92,6 +94,9 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text('Event Terbaru', style: MyTypography.titleMedium),
                         GestureDetector(
+                          onTap: () {
+                            Get.toNamed<void>(RoutesName.allEventPage);
+                          },
                           child: Text(
                             'See All',
                             style: MyTypography.labelSmall
@@ -126,6 +131,12 @@ class _HomePageState extends State<HomePage> {
                       }
                     },
                   ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(
+                      thickness: 2,
+                    ),
+                  ),
                   // const EventCard(),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
@@ -137,6 +148,9 @@ class _HomePageState extends State<HomePage> {
                           style: MyTypography.titleMedium,
                         ),
                         GestureDetector(
+                          onTap: () {
+                            Get.toNamed<void>(RoutesName.allInformationPage);
+                          },
                           child: Text(
                             'See All',
                             style: MyTypography.labelSmall

@@ -3,8 +3,10 @@ import 'package:event_app/features/auth/presentation/pages/home_page.dart';
 import 'package:event_app/features/auth/presentation/pages/login_page.dart';
 import 'package:event_app/features/auth/presentation/pages/register_page.dart';
 import 'package:event_app/features/auth/presentation/pages/register_success_page.dart';
+import 'package:event_app/features/event/presentation/pages/all_event_page.dart';
 import 'package:event_app/features/event/presentation/pages/detail_event_page.dart';
 import 'package:event_app/features/event/presentation/pages/search_event_page.dart';
+import 'package:event_app/features/information/presentation/pages/all_information_page.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -37,6 +39,18 @@ class Routes {
       page: DetailEventPage.new,
       transition: Transition.cupertino,
     ),
+    GetPage(
+      name: RoutesName.allEventPage,
+      page: AllEventPage.new,
+      transition: Transition.cupertino,
+    ),
+
+    //*INFORMATION
+    GetPage(
+      name: RoutesName.allInformationPage,
+      page: AllInformationPage.new,
+      transition: Transition.cupertino,
+    ),
 
     //* HOME
     GetPage(
@@ -60,4 +74,6 @@ class RoutesName {
   static const mainNavigation = '/main-navigation';
   static const searchEventPage = '/search-event';
   static const detailEventPage = '/detail-event';
+  static const allEventPage = '/all-event';
+  static const allInformationPage = '/all-information';
 }

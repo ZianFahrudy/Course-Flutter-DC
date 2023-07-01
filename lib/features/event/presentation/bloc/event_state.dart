@@ -25,3 +25,10 @@ class EventSuccess extends EventState {
     required this.response,
   });
 }
+
+class DetailEventSuccess extends EventState {
+  final EventDetailEntity response;
+  const DetailEventSuccess({
+    required this.response,
+  });
+}

@@ -1,26 +1,77 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:event_app/common/utils/palette.dart';
 import 'package:event_app/common/utils/typography.dart';
+import 'package:event_app/components/empty/nothing.dart';
+import 'package:event_app/core/di/injection.dart';
+import 'package:event_app/features/event/domain/entities/event_entity.dart';
+import 'package:event_app/features/event/presentation/bloc/event_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-class DetailEventPage extends StatelessWidget {
+class DetailEventPage extends StatefulWidget {
   const DetailEventPage({super.key});
 
   @override
+  State<DetailEventPage> createState() => _DetailEventPageState();
+}
+
+class _DetailEventPageState extends State<DetailEventPage> {
+  final eventBloc = sl<EventBloc>();
+
+  @override
+  void initState() {
+    final eventId = Get.arguments as String;
+
+    eventBloc.add(GetDetailEventEvent(body: int.parse(eventId)));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: const [
-            HeaderDetailEvent(),
-            JoinAndAbsenButton(),
-            AboutEvent(),
-            TimeEvent(),
-            DescriptionEvent(),
-          ],
+    return BlocProvider(
+      create: (context) => eventBloc,
+      child: Scaffold(
+        body: BlocBuilder<EventBloc, EventState>(
+          builder: (context, state) {
+            if (state is DetailEventSuccess) {
+              return SafeArea(
+                child: Column(
+                  children: [
+                    HeaderDetailEvent(
+                      data: state.response.data,
+                    ),
+                    if (state.response.data.isJoin == 'true')
+                      const JoinAndAbsenButton(),
+                    AboutEvent(
+                      about: state.response.data.eventAbout,
+                    ),
+                    TimeEvent(
+                      data: state.response.data,
+                    ),
+                    DescriptionEvent(
+                      desc: state.response.data.eventDesc,
+                    ),
+                  ],
+                ),
+              );
+            } else if (state is EventFailure) {
+              return Center(
+                child: Text(state.message),
+              );
+            } else if (state is EventLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return const Nothing();
+            }
+          },
         ),
       ),
     );
@@ -29,8 +80,11 @@ class DetailEventPage extends StatelessWidget {
 
 class DescriptionEvent extends StatelessWidget {
   const DescriptionEvent({
+    required this.desc,
     super.key,
   });
+
+  final String desc;
 
   @override
   Widget build(BuildContext context) {
@@ -53,51 +107,13 @@ class DescriptionEvent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Row(
-            children: [
-              const FaIcon(
-                FontAwesomeIcons.check,
-                size: 15,
-                color: Palette.primary,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Pengenalan Product Management',
-                style:
-                    MyTypography.labelMedium.copyWith(color: Palette.greyText),
-              ),
-            ],
+          Html(
+            data: desc,
           ),
-          Row(
-            children: [
-              const FaIcon(
-                FontAwesomeIcons.check,
-                size: 15,
-                color: Palette.primary,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Pengenalan Product Management',
-                style:
-                    MyTypography.labelMedium.copyWith(color: Palette.greyText),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const FaIcon(
-                FontAwesomeIcons.check,
-                size: 15,
-                color: Palette.primary,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Pengenalan Product Management',
-                style:
-                    MyTypography.labelMedium.copyWith(color: Palette.greyText),
-              ),
-            ],
-          ),
+          // Text(
+          //   desc,
+          //   style: MyTypography.labelMedium.copyWith(color: Palette.greyText),
+          // ),
         ],
       ),
     );
@@ -106,8 +122,11 @@ class DescriptionEvent extends StatelessWidget {
 
 class TimeEvent extends StatelessWidget {
   const TimeEvent({
+    required this.data,
     super.key,
   });
+
+  final EventEntity data;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +149,8 @@ class TimeEvent extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                '19 Desember 2022',
+                DateFormat('dd MMMM yyyy', 'ID')
+                    .format(DateTime.parse(data.eventDate)),
                 style:
                     MyTypography.labelSmall.copyWith(color: Palette.greyText),
               ),
@@ -146,7 +166,7 @@ class TimeEvent extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                '19.30 WIB - Selesai',
+                '${data.eventStartTime.substring(0, data.eventStartTime.length - 3)} WIB - Selesai',
                 style:
                     MyTypography.labelSmall.copyWith(color: Palette.greyText),
               ),
@@ -176,8 +196,11 @@ class TimeEvent extends StatelessWidget {
 
 class AboutEvent extends StatelessWidget {
   const AboutEvent({
+    required this.about,
     super.key,
   });
+
+  final String about;
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +224,7 @@ class AboutEvent extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum',
+            about,
             style: MyTypography.bodySmall.copyWith(color: Palette.greyText),
           ),
         ],
@@ -250,8 +273,11 @@ class JoinAndAbsenButton extends StatelessWidget {
 
 class HeaderDetailEvent extends StatelessWidget {
   const HeaderDetailEvent({
+    required this.data,
     super.key,
   });
+
+  final EventEntity data;
 
   @override
   Widget build(BuildContext context) {
@@ -307,33 +333,49 @@ class HeaderDetailEvent extends StatelessWidget {
                         width: 55,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Palette.greyAvatar,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            'https://static.wikia.nocookie.net/heros/images/5/52/Kakashi_Hatake_Infobox.png/revision/latest?cb=20210514165627&path-prefix=fr',
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                        child: data.mentor.mentorAvatar == ''
+                            ? const Placeholder()
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  data.mentor.mentorAvatar,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                       ),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            'Slicing UI Design with Flutter',
-                            style: MyTypography.bodyMedium,
+                          Expanded(
+                            child: SizedBox(
+                              width: Get.width - 220,
+                              child: AutoSizeText(
+                                data.eventName,
+                                maxLines: 2,
+                                minFontSize: 9,
+                                overflow: TextOverflow.ellipsis,
+                                style: MyTypography.bodyMedium,
+                              ),
+                            ),
                           ),
                           Text(
-                            'Hatake Kakashi',
-                            style: MyTypography.bodySmall,
+                            data.mentor.mentorName,
+                            style: MyTypography.bodySmall.copyWith(fontSize: 9),
                           ),
-                          Text(
-                            'Jonin Shinobi at KONOHA',
-                            style: MyTypography.labelSmall,
+                          SizedBox(
+                            width: Get.width - 150,
+                            child: AutoSizeText(
+                              '${data.mentor.mentorJob} at ${data.mentor.mentorCompany}',
+                              maxLines: 2,
+                              minFontSize: 7,
+                              overflow: TextOverflow.ellipsis,
+                              style: MyTypography.labelSmall,
+                            ),
                           ),
                         ],
                       )

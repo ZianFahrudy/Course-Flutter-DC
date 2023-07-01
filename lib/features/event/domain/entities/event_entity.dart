@@ -16,6 +16,8 @@ class EventEntity extends Equatable {
   final String eventDesc;
   final MentorEntity mentor;
   final String status;
+  final String isJoin;
+  final String attend;
   const EventEntity({
     required this.eventId,
     required this.eventLabel,
@@ -29,6 +31,8 @@ class EventEntity extends Equatable {
     required this.eventDesc,
     required this.mentor,
     required this.status,
+    required this.isJoin,
+    required this.attend,
   });
   @override
   List<Object> get props {
@@ -45,6 +49,8 @@ class EventEntity extends Equatable {
       eventDesc,
       mentor,
       status,
+      isJoin,
+      attend
     ];
   }
 }
