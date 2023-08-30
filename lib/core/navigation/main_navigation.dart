@@ -5,6 +5,8 @@ import 'package:event_app/features/auth/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../features/event/presentation/pages/my_event_page.dart';
+
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
@@ -19,7 +21,7 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final pages = <Widget>[
       const HomePage(),
-      const HomePage(),
+      const MyEventPage(),
       const HomePage(),
       const HomePage(),
     ];
